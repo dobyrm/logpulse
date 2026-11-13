@@ -33,10 +33,10 @@ chrono = "0.4"
 1. **Navigate to the project root** and ensure you have the Rust toolchain installed (`rustc` and `cargo`).
 2. **Create a sample log file** (e.g., `inputs/example.log`) in the project root:
    ```text
-   INFO: Server started on port 8080
-   ERROR: Connection timed out on IP 192.168.1.10
-   INFO: User logged in successfully
-   ERROR: Database connection failed
+   [2026-11-06 14:03:38] [INFO] [112.195.105.127] HTTP request GET /healthz completed with status 200 in 2878ms
+   [2026-11-06 14:03:54] [ERROR] [175.194.75.87] Disk write error on partition /var/log/4980
+   [2026-11-06 14:04:07] [INFO] [233.49.52.91] User session started successfully for user_id=4232
+   [2026-11-06 14:05:52] [ERROR] [237.210.2.186] NullPointerException in AuthModule at line 9886
    ```
 
 3. **Run the utility with arguments:**
