@@ -8,10 +8,10 @@ use std::io::{self, Write};
 #[derive(Parser, Debug)]
 #[command(name = "logpulse", version = "0.1.0", about = "High-performance CLI log analyzer")]
 struct Args {
-    #[arg(long)]
+    #[arg(short = 'f', long)]
     file: String,
 
-    #[arg(long)]
+    #[arg(short = 't', long)]
     filter: Option<String>,
 }
 
