@@ -31,37 +31,42 @@ chrono = "0.4"
 
 1. **Navigate to the project root** and ensure you have the Rust toolchain installed (`rustc` and `cargo`).
 2. **Create a sample log file** (e.g., `inputs/example.log`) in the project root:
-   ```text
-   [2026-11-06 14:03:38] [INFO] [112.195.105.127] HTTP request GET /healthz completed with status 200 in 2878ms
-   [2026-11-06 14:03:54] [ERROR] [175.194.75.87] Disk write error on partition /var/log/4980
-   [2026-11-06 14:04:07] [INFO] [233.49.52.91] User session started successfully for user_id=4232
-   [2026-11-06 14:05:52] [ERROR] [237.210.2.186] NullPointerException in AuthModule at line 9886
-   ```
+    ```text
+    [2026-11-06 14:03:38] [INFO] [112.195.105.127] HTTP request GET /healthz completed with status 200 in 2878ms
+    [2026-11-06 14:03:54] [ERROR] [175.194.75.87] Disk write error on partition /var/log/4980
+    [2026-11-06 14:04:07] [INFO] [233.49.52.91] User session started successfully for user_id=4232
+    [2026-11-06 14:05:52] [ERROR] [237.210.2.186] NullPointerException in AuthModule at line 9886
+    ```
 
 3. **Run the utility with arguments:**
 
-   * **Count total lines without filtering:**
-     ```bash
-     cargo run -- --file inputs/example.log
-     ```
+  * **Count total lines without filtering:**
+    ```bash
+    cargo run --release -- --file inputs/example.log
+    ```
 
-   * **Filter log entries by a specific pattern:**
-     ```bash
-     cargo run -- --file inputs/example.log --filter ERROR
-     ```
+  * **Filter log entries by a specific pattern:**
+    ```bash
+    cargo run --release -- --file inputs/example.log --filter ERROR
+    ```
 
-   * **View built-in help and available options:**
-     ```bash
-     cargo run -- --help
-     ```
+  * **Filter log entries by a specific date and time range:**
+    ```bash
+    cargo run --release -- --file inputs/example.log --since "2026-11-06 14:03:38" --until "2026-11-06 14:03:54"
+    ```
 
-   *(Note: The double dash `--` separates `cargo` arguments from the arguments passed directly to your compiled binary).*
+  * **View built-in help and available options:**
+    ```bash
+    cargo run -- --help
+    ```
+
+    *(Note: The double dash `--` separates `cargo` arguments from the arguments passed directly to your compiled binary).*
 
 4. **Build a release binary (for maximum performance):**
-   ```bash
-   cargo build --release
-   ./target/release/logpulse -file inputs/example.log -filter ERROR
-   ```
+    ```bash
+    cargo build --release
+    ./target/release/logpulse -file inputs/example.log -filter ERROR
+    ```
 
 ---
 
