@@ -41,24 +41,14 @@ chrono = "0.4"
 
 3. **Run the utility with arguments:**
 
-   * **Count total lines without filtering (long flag):**
+   * **Count total lines without filtering:**
      ```bash
      cargo run -- --file inputs/example.log
      ```
 
-   * **Count total lines (short flag):**
-     ```bash
-     cargo run -- -f inputs/example.log
-     ```
-
-   * **Filter log entries by a specific pattern (long flags):**
+   * **Filter log entries by a specific pattern:**
      ```bash
      cargo run -- --file inputs/example.log --filter ERROR
-     ```
-
-   * **Filter log entries using short flags (`-f` for file, `-t` for text filter):**
-     ```bash
-     cargo run -- -f inputs/example.log -t ERROR
      ```
 
    * **View built-in help and available options:**
@@ -71,7 +61,7 @@ chrono = "0.4"
 4. **Build a release binary (for maximum performance):**
    ```bash
    cargo build --release
-   ./target/release/logpulse -f inputs/example.log -t ERROR
+   ./target/release/logpulse -file inputs/example.log -filter ERROR
    ```
 
 ---

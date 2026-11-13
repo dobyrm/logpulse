@@ -1,17 +1,20 @@
+mod models;
 mod filter;
+mod parser;
+mod ui;
 
 use clap::Parser;
 use memmap2::Mmap;
 use std::fs::File;
-use std::io::{self, Write};
+use std::io;
 
 #[derive(Parser, Debug)]
 #[command(name = "logpulse", version = "0.1.0", about = "High-performance CLI log analyzer")]
 struct Args {
-    #[arg(short = 'f', long)]
+    #[arg(long)]
     file: String,
 
-    #[arg(short = 't', long)]
+    #[arg(long)]
     filter: Option<String>,
 }
 
@@ -31,13 +34,18 @@ fn main() -> io::Result<()> {
 
         if filter::matches_filter(line_bytes, filter_bytes) {
             matched_lines += 1;
+            
             if let Ok(line_str) = std::str::from_utf8(line_bytes) {
-                println!("{}", line_str);
+                if let Some(entry) = parser::parse_log_line(line_str) {
+                    ui::print_log_entry(&entry);
+                } else {
+                    println!("{}", line_str);
+                }
             }
         }
     }
 
-    writeln!(io::stderr(), "Total matched lines: {}", matched_lines)?;
+    ui::print_summary(matched_lines);
 
     Ok(())
 }
