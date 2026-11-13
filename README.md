@@ -92,6 +92,8 @@ A Python script that generates realistic log files containing various log levels
 **Usage:**
 ```bash
 python3 tools/generate_system_logs.py
+python3 tools/generate_git_head_logs.py
 ```
 
-* Creates `inputs/system.log` (~100 MB by default).
+* Creates `inputs/system.log` (~100 MB).
+* Creates `inputs/git_head.log` (~10 MB).
