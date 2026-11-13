@@ -1,6 +1,6 @@
 use crate::models::{LogEntry, LogLevel};
 
-pub fn print_log_entry(entry: &LogEntry) {
+pub fn format_log_entry(entry: &LogEntry) -> String {
     let level_str = match entry.level {
         LogLevel::Error => "\x1b[1;31mERROR\x1b[0m",
         LogLevel::Warn => "\x1b[1;33mWARN\x1b[0m",
@@ -14,13 +14,13 @@ pub fn print_log_entry(entry: &LogEntry) {
         None => "".to_string(),
     };
 
-    println!(
+    format!(
         "[{}] [{}] {:<15} {}",
         entry.timestamp, level_str, ip_display, entry.message
-    );
+    )
 }
 
 pub fn print_summary(matched_lines: usize) {
-    println!("\n\x1b[1;34m=== Scan Complete ===\x1b[0m");
+    println!("\n\x1b[1;34m=== Complete ===\x1b[0m");
     println!("Total matched lines: \x1b[1;32m{}\x1b[0m", matched_lines);
 }
