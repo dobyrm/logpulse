@@ -1,6 +1,6 @@
 /target
 
 inputs/*
-!inputs/test.log
+!inputs/example.log
 
 .vscode
