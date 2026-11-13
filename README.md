@@ -31,7 +31,7 @@ chrono = "0.4"
 ## How to Run
 
 1. **Navigate to the project root** and ensure you have the Rust toolchain installed (`rustc` and `cargo`).
-2. **Create a sample log file** (e.g., `test.log`) in the project root:
+2. **Create a sample log file** (e.g., `inputs/example.log`) in the project root:
    ```text
    INFO: Server started on port 8080
    ERROR: Connection timed out on IP 192.168.1.10
@@ -43,22 +43,22 @@ chrono = "0.4"
 
    * **Count total lines without filtering (long flag):**
      ```bash
-     cargo run -- --file test.log
+     cargo run -- --file inputs/example.log
      ```
 
    * **Count total lines (short flag):**
      ```bash
-     cargo run -- -f test.log
+     cargo run -- -f inputs/example.log
      ```
 
    * **Filter log entries by a specific pattern (long flags):**
      ```bash
-     cargo run -- --file test.log --filter ERROR
+     cargo run -- --file inputs/example.log --filter ERROR
      ```
 
    * **Filter log entries using short flags (`-f` for file, `-t` for text filter):**
      ```bash
-     cargo run -- -f test.log -t ERROR
+     cargo run -- -f inputs/example.log -t ERROR
      ```
 
    * **View built-in help and available options:**
@@ -71,7 +71,7 @@ chrono = "0.4"
 4. **Build a release binary (for maximum performance):**
    ```bash
    cargo build --release
-   ./target/release/logpulse -f test.log -t ERROR
+   ./target/release/logpulse -f inputs/example.log -t ERROR
    ```
 
 ---

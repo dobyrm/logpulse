@@ -31,12 +31,12 @@ fn main() -> io::Result<()> {
     for line_bytes in mmap.split(|&b| b == b'\n') {
         total_lines += 1;
 
-        if let Some(pattern) = filter_bytes {
-            if line_bytes.windows(pattern.len()).any(|window| window == pattern) {
-                matched_lines += 1;
-                if let Ok(line_str) = std::str::from_utf8(line_bytes) {
-                    println!("{}", line_str);
-                }
+        if let Some(pattern) = filter_bytes 
+            && line_bytes.windows(pattern.len()).any(|window| window == pattern) 
+        {
+            matched_lines += 1;
+            if let Ok(line_str) = std::str::from_utf8(line_bytes) {
+                println!("{}", line_str);
             }
         }
     }
