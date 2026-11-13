@@ -1,4 +1,5 @@
 use crate::models::{LogEntry, LogLevel};
+use chrono::NaiveDateTime;
 
 pub fn parse_log_line(line: &str) -> Option<LogEntry> {
     let line = line.trim();
@@ -7,7 +8,8 @@ pub fn parse_log_line(line: &str) -> Option<LogEntry> {
     }
 
     let ts_end = line.find(']')?;
-    let timestamp = &line[1..ts_end];
+    let timestamp_str = &line[1..ts_end];
+    let timestamp = NaiveDateTime::parse_from_str(timestamp_str, "%Y-%m-%d %H:%M:%S").ok()?;
 
     let rest = &line[ts_end + 1..].trim_start();
     if !rest.starts_with('[') {
@@ -27,7 +29,7 @@ pub fn parse_log_line(line: &str) -> Option<LogEntry> {
     let message = rest[ip_end + 1..].trim().to_string();
 
     Some(LogEntry {
-        timestamp: timestamp.to_string(),
+        timestamp,
         level,
         ip,
         message,
@@ -37,13 +39,15 @@ pub fn parse_log_line(line: &str) -> Option<LogEntry> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::NaiveDateTime;
 
     #[test]
     fn test_parse_valid_log() {
         let raw = "[2026-11-13 15:04:05] [ERROR] [192.168.1.1] Connection refused";
         let entry = parse_log_line(raw).expect("Should parse successfully");
 
-        assert_eq!(entry.timestamp, "2026-11-13 15:04:05");
+        let expected_ts = NaiveDateTime::parse_from_str("2026-11-13 15:04:05", "%Y-%m-%d %H:%M:%S").unwrap();
+        assert_eq!(entry.timestamp, expected_ts);
         assert_eq!(entry.level, LogLevel::Error);
         assert_eq!(entry.ip, Some("192.168.1.1".to_string()));
         assert_eq!(entry.message, "Connection refused");

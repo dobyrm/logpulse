@@ -1,18 +1,20 @@
-#[derive(Debug, PartialEq, Eq)]
+use chrono::NaiveDateTime;
+
+#[derive(Debug, PartialEq)]
 pub enum LogLevel {
-    Info,
-    Warn,
     Error,
+    Warn,
+    Info,
     Debug,
     Unknown,
 }
 
 impl From<&str> for LogLevel {
     fn from(s: &str) -> Self {
-        match s.to_uppercase().as_str() {
-            "INFO" => LogLevel::Info,
-            "WARN" => LogLevel::Warn,
+        match s {
             "ERROR" => LogLevel::Error,
+            "WARN" => LogLevel::Warn,
+            "INFO" => LogLevel::Info,
             "DEBUG" => LogLevel::Debug,
             _ => LogLevel::Unknown,
         }
@@ -21,7 +23,7 @@ impl From<&str> for LogLevel {
 
 #[derive(Debug)]
 pub struct LogEntry {
-    pub timestamp: String,
+    pub timestamp: NaiveDateTime,
     pub level: LogLevel,
     pub ip: Option<String>,
     pub message: String,
