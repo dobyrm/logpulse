@@ -95,5 +95,3 @@ python3 tools/generate_system_logs.py
 ```
 
 * Creates `inputs/system.log` (~100 MB by default).
-
-If no warnings are emitted, your code adheres to Rust's best practices!
