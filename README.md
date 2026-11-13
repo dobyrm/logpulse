@@ -22,7 +22,6 @@ The project relies on the following crates:
 clap = { version = "4.0", features = ["derive"] }
 rayon = "1.8"
 memmap2 = "0.9"
-regex = "1.10"
 chrono = "0.4"
 ```
 
