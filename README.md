@@ -90,10 +90,6 @@ cargo test
 
 Helper scripts for testing, benchmarking, and generating large test data sets.
 
-### Log Generator (`tools/generate_system_logs.py`)
-
-A Python script that generates realistic log files containing various log levels (`INFO`, `WARN`, `ERROR`, `DEBUG`), timestamps, and IP addresses. It is used to test the performance of `memmap2` and upcoming `rayon` parallelism.
-
 **Usage:**
 ```bash
 python3 tools/generate_system_logs.py
