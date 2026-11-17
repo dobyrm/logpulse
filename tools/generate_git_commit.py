@@ -73,8 +73,8 @@ def generate_conventional_commit():
     msg = random.choice(MESSAGES[commit_type])
     return f"{commit_type}({scope}): {msg}"
 
-def generate_git_head_file(filename="inputs/git_head.log", target_size_mb=10):
-    print(f"Generating git head file {filename} (~{target_size_mb} MB)...")
+def generate_git_commit_file(filename="inputs/git_commit.log", target_size_mb=10):
+    print(f"Generating git commit file {filename} (~{target_size_mb} MB)...")
     
     target_size_bytes = target_size_mb * 1024 * 1024
     written_bytes = 0
@@ -106,4 +106,4 @@ def generate_git_head_file(filename="inputs/git_head.log", target_size_mb=10):
     print(f"Done! File successfully created in {elapsed:.2f} sec. Path: {filename}")
 
 if __name__ == "__main__":
-    generate_git_head_file("inputs/git_head.log", target_size_mb=10)
+    generate_git_commit_file("inputs/git_commit.log", target_size_mb=10)

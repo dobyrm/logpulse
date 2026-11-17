@@ -93,8 +93,8 @@ Helper scripts for testing, benchmarking, and generating large test data sets.
 **Usage:**
 ```bash
 python3 tools/generate_syslog.py
-python3 tools/generate_git_head.py
+python3 tools/generate_git_commit.py
 ```
 
 * Creates `inputs/syslog.log` (~10 MB).
-* Creates `inputs/git_head.log` (~10 MB).
+* Creates `inputs/git_commit.log` (~10 MB).
