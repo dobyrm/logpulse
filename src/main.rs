@@ -1,5 +1,5 @@
-mod models;
 mod filter;
+mod models;
 mod parser;
 mod ui;
 
@@ -61,10 +61,11 @@ fn main() -> io::Result<()> {
         };
 
         if let Some(entry) = parser::parse_log_line(line_str) {
-            if since_time.is_some_and(|since| entry.timestamp < since) {
+            let ts = entry.timestamp();
+            if since_time.is_some_and(|since| ts < since) {
                 return;
             }
-            if until_time.is_some_and(|until| entry.timestamp > until) {
+            if until_time.is_some_and(|until| ts > until) {
                 return;
             }
 

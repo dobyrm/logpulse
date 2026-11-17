@@ -11,27 +11,27 @@ mod tests {
 
     #[test]
     fn test_filter_matches_successfully() {
-        let line = b"2026-06-06 10:00:00 [ERROR] Connection lost";
+        let line = b"Nov  6 10:00:00 server-01 nginx[123]: ERROR Connection lost";
         let pattern = b"ERROR";
         assert!(matches_filter(line, Some(pattern)));
     }
 
     #[test]
     fn test_filter_does_not_match() {
-        let line = b"2026-06-06 10:01:00 [INFO] System running fine";
+        let line = b"Nov  6 10:01:00 server-01 nginx[123]: INFO System running fine";
         let pattern = b"ERROR";
         assert!(!matches_filter(line, Some(pattern)));
     }
 
     #[test]
     fn test_no_filter_provided() {
-        let line = b"2026-06-06 10:02:00 [DEBUG] Some debug message";
+        let line = b"Nov  6 10:02:00 server-01 nginx[123]: DEBUG Some debug message";
         assert!(matches_filter(line, None));
     }
 
     #[test]
     fn test_case_sensitivity() {
-        let line = b"2026-06-06 10:03:00 [error] lowercase error";
+        let line = b"Nov  6 10:03:00 server-01 nginx[123]: error lowercase error";
         let pattern = b"ERROR";
         assert!(!matches_filter(line, Some(pattern)));
     }
