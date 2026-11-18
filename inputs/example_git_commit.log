@@ -1,0 +1,10 @@
+e586bc5629351c691119abf04ff9a3738bff7768 72646bf0b57c2b7551c36df40215c338fa55a15c brave_bear <bear@taiga.org> 1794570271 +0100	commit: docs(parser): add instructions for compiling with release optimizations
+e3c3eaa08f051e735652f1fb36c187cc77b6dd8d e586bc5629351c691119abf04ff9a3738bff7768 wise_owl <owl@night.com> 1794570447 -0500	commit: fix(parser): prevent race conditions during parallel scan execution
+3e42ceb44d7141d33b8929738d5bfec146fa2868 e3c3eaa08f051e735652f1fb36c187cc77b6dd8d clever_fox <fox@forest.org> 1794570567 -0400	commit: fix(mmap): prevent race conditions during parallel scan execution
+b31db0e369d9decf0aec4f701907250ff5c0d7e6 3e42ceb44d7141d33b8929738d5bfec146fa2868 wild_wolf <wolf@pack.net> 1794570712 -0500	commit: fix(deps): resolve thread safety issue with stdout writing using mutex
+7e178d711c139ec57c05109d3a413a4a9a00f374 b31db0e369d9decf0aec4f701907250ff5c0d7e6 fast_badger <badger@burrow.io> 1794570829 +0200	commit: refactor(parser): clean up unused regex dependency
+d1137f7fa296530d4e1fbcba4db5debb6b0d5159 7e178d711c139ec57c05109d3a413a4a9a00f374 clever_fox <fox@forest.org> 1794571030 +0100	commit: refactor(cli): clean up unused regex dependency
+dc57934805b2ceb1e43bfc59824c24fb0d8a9aba d1137f7fa296530d4e1fbcba4db5debb6b0d5159 wild_wolf <wolf@pack.net> 1794571317 +0200	commit: perf(parser): optimize memory mapping overhead for large log files
+9616949918610ac3220127fc9a2bd3ea032e7ea5 dc57934805b2ceb1e43bfc59824c24fb0d8a9aba wild_wolf <wolf@pack.net> 1794571412 +0200	commit: test(parser): add test cases for timestamp boundaries
+f11efe275c30a3a8b25ecfd969d328b3b1c2adea 9616949918610ac3220127fc9a2bd3ea032e7ea5 fast_badger <badger@burrow.io> 1794571619 +0100	commit: feat(parser): implement parallel log splitting using rayon
+1d6c0ddd35ac245e705d14c1da57fd63d424cf50 f11efe275c30a3a8b25ecfd969d328b3b1c2adea fast_badger <badger@burrow.io> 1794571848 +0200	commit: refactor(docs): modularize codebase into models, filter, parser, and ui modules

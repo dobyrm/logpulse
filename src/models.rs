@@ -21,7 +21,7 @@ impl From<&str> for LogLevel {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SystemLog {
     pub timestamp: NaiveDateTime,
     pub level: LogLevel,
@@ -30,7 +30,7 @@ pub struct SystemLog {
     pub message: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct GitCommit {
     pub hash: String,
     pub parent_hash: String,
@@ -40,7 +40,7 @@ pub struct GitCommit {
     pub message: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum LogEntry {
     System(SystemLog),
     Git(GitCommit),

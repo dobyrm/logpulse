@@ -1,4 +1,5 @@
 mod filter;
+mod forensics;
 mod models;
 mod parser;
 mod ui;
@@ -8,7 +9,7 @@ use clap::Parser;
 use memmap2::Mmap;
 use rayon::prelude::*;
 use std::fs::File;
-use std::io::{self, Write};
+use std::io::{self, BufRead, BufReader, Write};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
 
@@ -19,6 +20,9 @@ struct Args {
     file: String,
 
     #[arg(long)]
+    git_file: Option<String>,
+
+    #[arg(long)]
     filter: Option<String>,
 
     #[arg(long)]
@@ -26,10 +30,17 @@ struct Args {
 
     #[arg(long)]
     until: Option<String>,
+
+    #[arg(long, default_value_t = 15)]
+    window_minutes: i64,
 }
 
 fn main() -> io::Result<()> {
     let args = Args::parse();
+
+    if let Some(git_path) = args.git_file {
+        return run_forensics(&args.file, &git_path, args.window_minutes);
+    }
 
     let file = File::open(&args.file)?;
     let mmap = unsafe { Mmap::map(&file)? };
@@ -82,6 +93,47 @@ fn main() -> io::Result<()> {
     });
 
     ui::print_summary(matched_lines.load(Ordering::Relaxed));
+
+    Ok(())
+}
+
+fn run_forensics(syslog_path: &str, git_path: &str, window_minutes: i64) -> io::Result<()> {
+    println!("\x1b[1;36m[Forensics]\x1b[0m Loading and parsing logs for correlation...");
+
+    let mut entries = Vec::new();
+
+    let sys_file = File::open(syslog_path)?;
+    for l in BufReader::new(sys_file).lines().map_while(Result::ok) {
+        if let Some(entry) = parser::parse_log_line(&l) {
+            entries.push(entry);
+        }
+    }
+
+    let git_file = File::open(git_path)?;
+    for l in BufReader::new(git_file).lines().map_while(Result::ok) {
+        if let Some(entry) = parser::parse_log_line(&l) {
+            entries.push(entry);
+        }
+    }
+
+    println!("Total successfully parsed records: {}", entries.len());
+    println!("Correlating events (window: {} mins)...", window_minutes);
+
+    let reports = forensics::correlate_incidents(&mut entries, window_minutes);
+
+    println!("\n\x1b[1;31m=== Incident Forensics Report ===\x1b[0m");
+    if reports.is_empty() {
+        println!("No correlated incidents found within the specified window.");
+    } else {
+        for (i, report) in reports.iter().enumerate() {
+            println!("\n--- Incident #{i} ---");
+            println!("🚨 Error Event: {}", ui::format_log_entry(&report.error_entry));
+            println!("🔍 Suspect Git Commits leading up to error:");
+            for commit in &report.suspect_commits {
+                println!("   -> {}", ui::format_log_entry(commit));
+            }
+        }
+    }
 
     Ok(())
 }

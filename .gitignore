@@ -1,6 +1,7 @@
 /target
 
 inputs/*
-!inputs/example.log
+!inputs/example_git_commit.log
+!inputs/example_syslog.log
 
 .vscode

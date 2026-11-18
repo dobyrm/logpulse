@@ -30,42 +30,46 @@ chrono = "0.4"
 ## How to Run
 
 1. **Navigate to the project root** and ensure you have the Rust toolchain installed (`rustc` and `cargo`).
-2. **Create a sample log file** (e.g., `inputs/example.log`) in the project root:
-    ```text
-    [2026-11-06 14:03:38] [INFO] [112.195.105.127] HTTP request GET /healthz completed with status 200 in 2878ms
-    [2026-11-06 14:03:54] [ERROR] [175.194.75.87] Disk write error on partition /var/log/4980
-    [2026-11-06 14:04:07] [INFO] [233.49.52.91] User session started successfully for user_id=4232
-    [2026-11-06 14:05:52] [ERROR] [237.210.2.186] NullPointerException in AuthModule at line 9886
-    ```
 
-3. **Run the utility with arguments:**
+2. **Run the utility with arguments using the repository sample logs (`inputs/example_syslog.log` and `inputs/example_git_commit.log`):**
 
-  * **Count total lines without filtering:**
-    ```bash
-    cargo run --release -- --file inputs/example.log
-    ```
+    * **Count total lines without filtering:**
 
-  * **Filter log entries by a specific pattern:**
-    ```bash
-    cargo run --release -- --file inputs/example.log --filter ERROR
-    ```
+      ```bash
+      cargo run --release -- --file inputs/example_syslog.log
+      ```
 
-  * **Filter log entries by a specific date and time range:**
-    ```bash
-    cargo run --release -- --file inputs/example.log --since "2026-11-06 14:03:38" --until "2026-11-06 14:03:54"
-    ```
+    * **Filter log entries by a specific pattern:**
 
-  * **View built-in help and available options:**
-    ```bash
-    cargo run -- --help
-    ```
+      ```bash
+      cargo run --release -- --file inputs/example_syslog.log --filter ERROR
+      ```
+
+    * **Filter log entries by a specific date and time range:**
+
+      ```bash
+      cargo run --release -- --file inputs/example_syslog.log --since "2026-11-13 11:00:00" --until "2026-11-13 12:00:00"
+      ```
+
+    * **Run Incident Forensics (correlating Syslog errors with preceding Git commits):**
+
+      ```bash
+      cargo run --release -- --file inputs/example_syslog.log --git-file inputs/example_git_commit.log --window-minutes 15
+      ```
+
+    * **View built-in help and available options:**
+      ```bash
+      cargo run -- --help
+      ```
 
     *(Note: The double dash `--` separates `cargo` arguments from the arguments passed directly to your compiled binary).*
 
-4. **Build a release binary (for maximum performance):**
+3. **Build and run a release binary (for maximum performance):**
+
     ```bash
     cargo build --release
-    ./target/release/logpulse -file inputs/example.log -filter ERROR
+    ./target/release/logpulse --file inputs/example_syslog.log --filter ERROR
+    ./target/release/logpulse --file inputs/example_syslog.log --git-file inputs/example_git_commit.log --window-minutes 15
     ```
 
 ---

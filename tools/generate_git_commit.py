@@ -1,3 +1,4 @@
+import os
 import random
 import time
 
@@ -74,6 +75,7 @@ def generate_conventional_commit():
     return f"{commit_type}({scope}): {msg}"
 
 def generate_git_commit_file(filename="inputs/git_commit.log", target_size_mb=10):
+    os.makedirs("inputs", exist_ok=True)
     print(f"Generating git commit file {filename} (~{target_size_mb} MB)...")
     
     target_size_bytes = target_size_mb * 1024 * 1024
@@ -83,10 +85,10 @@ def generate_git_commit_file(filename="inputs/git_commit.log", target_size_mb=10
     prev_hash = generate_sha1()
     
     with open(filename, "w", encoding="utf-8") as f:
-        base_timestamp = 1794570000
+        base_timestamp = 1794570000 
         
         while written_bytes < target_size_bytes:
-            base_timestamp += random.randint(300, 14400)
+            base_timestamp += random.randint(60, 300)
             
             current_hash = generate_sha1()
             parent_hash = prev_hash
@@ -94,7 +96,6 @@ def generate_git_commit_file(filename="inputs/git_commit.log", target_size_mb=10
             
             author, email = random.choice(AUTHORS)
             timezone = random.choice(TIMEZONES)
-            
             commit_msg = generate_conventional_commit()
             
             line = f"{current_hash} {parent_hash} {author} <{email}> {base_timestamp} {timezone}\tcommit: {commit_msg}\n"
@@ -106,4 +107,4 @@ def generate_git_commit_file(filename="inputs/git_commit.log", target_size_mb=10
     print(f"Done! File successfully created in {elapsed:.2f} sec. Path: {filename}")
 
 if __name__ == "__main__":
-    generate_git_commit_file("inputs/git_commit.log", target_size_mb=10)
+    generate_git_commit_file()

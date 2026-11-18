@@ -1,0 +1,10 @@
+Nov 13 11:42:26 db-cluster-primary sshd[3465]: ERROR Disconnecting: Too many authentication failures for root
+Nov 13 11:43:56 db-cluster-primary kernel[7139]: Out of memory: Kill process 1420 (postgres) score 850 or sacrifice child
+Nov 13 11:44:34 node-worker-04 nginx[6662]: 192.168.1.10 - - [13/Nov/2026:10:45:30 +0200] "GET /api/v1/resource HTTP/1.1" 200 1024
+Nov 13 11:46:19 db-cluster-primary sshd[839]: Accepted publickey for root from 192.168.1.50 port 52210 ssh2
+Nov 13 11:48:21 node-worker-04 postgres[3775]: LOG: database system was shut down at 2026-11-13 10:00:00 EET
+Nov 13 11:50:15 db-cluster-primary postgres[6047]: FATAL: password authentication failed for user "app_user"
+Nov 13 11:52:01 db-cluster-primary postgres[6928]: LOG: database system was shut down at 2026-11-13 10:00:00 EET
+Nov 13 11:53:59 node-worker-04 kernel[1388]: Out of memory: Kill process 1420 (postgres) score 850 or sacrifice child
+Nov 13 11:55:33 node-worker-04 kernel[9787]: Out of memory: Kill process 1420 (postgres) score 850 or sacrifice child
+Nov 13 11:56:50 server-us-east-01 kernel[4939]: Out of memory: Kill process 1420 (postgres) score 850 or sacrifice child
