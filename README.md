@@ -36,25 +36,25 @@ chrono = "0.4"
     * **Count total lines without filtering:**
 
       ```bash
-      cargo run --release -- --file inputs/example_syslog.log
+      cargo run --release -- --sys-file inputs/example_syslog.log
       ```
 
     * **Filter log entries by a specific pattern:**
 
       ```bash
-      cargo run --release -- --file inputs/example_syslog.log --filter ERROR
+      cargo run --release -- --sys-file inputs/example_syslog.log --filter ERROR
       ```
 
     * **Filter log entries by a specific date and time range:**
 
       ```bash
-      cargo run --release -- --file inputs/example_syslog.log --since "2026-11-13 11:00:00" --until "2026-11-13 12:00:00"
+      cargo run --release -- --sys-file inputs/example_syslog.log --since "2026-11-13 11:00:00" --until "2026-11-13 12:00:00"
       ```
 
     * **Run Incident Forensics (correlating Syslog errors with preceding Git commits):**
 
       ```bash
-      cargo run --release -- --file inputs/example_syslog.log --git-file inputs/example_git_commit.log --window-minutes 15
+      cargo run --release -- --sys-file inputs/example_syslog.log --git-file inputs/example_git_commit.log --window-minutes 15
       ```
 
     * **View built-in help and available options:**
@@ -68,8 +68,8 @@ chrono = "0.4"
 
     ```bash
     cargo build --release
-    ./target/release/logpulse --file inputs/example_syslog.log --filter ERROR
-    ./target/release/logpulse --file inputs/example_syslog.log --git-file inputs/example_git_commit.log --window-minutes 15
+    ./target/release/logpulse --sys-file inputs/example_syslog.log --filter ERROR
+    ./target/release/logpulse --sys-file inputs/example_syslog.log --git-file inputs/example_git_commit.log --window-minutes 15
     ```
 
 ---

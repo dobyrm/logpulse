@@ -17,7 +17,7 @@ use std::sync::Mutex;
 #[command(name = "logpulse", version = "0.1.0", about = "High-performance CLI log analyzer")]
 struct Args {
     #[arg(long)]
-    file: String,
+    sys_file: String,
 
     #[arg(long)]
     git_file: Option<String>,
@@ -39,11 +39,11 @@ fn main() -> io::Result<()> {
     let args = Args::parse();
 
     if let Some(git_path) = args.git_file {
-        return run_forensics(&args.file, &git_path, args.window_minutes);
+        return run_forensics(&args.sys_file, &git_path, args.window_minutes);
     }
 
-    let file = File::open(&args.file)?;
-    let mmap = unsafe { Mmap::map(&file)? };
+    let sys_file = File::open(&args.sys_file)?;
+    let mmap = unsafe { Mmap::map(&sys_file)? };
 
     let filter_bytes = args.filter.as_deref().map(|s| s.as_bytes());
 
@@ -98,7 +98,7 @@ fn main() -> io::Result<()> {
 }
 
 fn run_forensics(syslog_path: &str, git_path: &str, window_minutes: i64) -> io::Result<()> {
-    println!("\x1b[1;36m[Forensics]\x1b[0m Loading and parsing logs for correlation...");
+    ui::print_forensics_loading();
 
     let mut entries = Vec::new();
 
@@ -116,24 +116,11 @@ fn run_forensics(syslog_path: &str, git_path: &str, window_minutes: i64) -> io::
         }
     }
 
-    println!("Total successfully parsed records: {}", entries.len());
-    println!("Correlating events (window: {} mins)...", window_minutes);
+    ui::print_forensics_progress(entries.len(), window_minutes);
 
     let reports = forensics::correlate_incidents(&mut entries, window_minutes);
 
-    println!("\n\x1b[1;31m=== Incident Forensics Report ===\x1b[0m");
-    if reports.is_empty() {
-        println!("No correlated incidents found within the specified window.");
-    } else {
-        for (i, report) in reports.iter().enumerate() {
-            println!("\n--- Incident #{i} ---");
-            println!("🚨 Error Event: {}", ui::format_log_entry(&report.error_entry));
-            println!("🔍 Suspect Git Commits leading up to error:");
-            for commit in &report.suspect_commits {
-                println!("   -> {}", ui::format_log_entry(commit));
-            }
-        }
-    }
+    ui::print_forensics_report(&reports);
 
     Ok(())
 }
