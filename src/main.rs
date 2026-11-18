@@ -9,7 +9,7 @@ use clap::Parser;
 use memmap2::Mmap;
 use rayon::prelude::*;
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, Write};
+use std::io::{self, Write};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
 
@@ -100,21 +100,32 @@ fn main() -> io::Result<()> {
 fn run_forensics(syslog_path: &str, git_path: &str, window_minutes: i64) -> io::Result<()> {
     ui::print_forensics_loading();
 
-    let mut entries = Vec::new();
-
     let sys_file = File::open(syslog_path)?;
-    for l in BufReader::new(sys_file).lines().map_while(Result::ok) {
-        if let Some(entry) = parser::parse_log_line(&l) {
-            entries.push(entry);
-        }
-    }
+    let sys_mmap = unsafe { Mmap::map(&sys_file)? };
 
     let git_file = File::open(git_path)?;
-    for l in BufReader::new(git_file).lines().map_while(Result::ok) {
-        if let Some(entry) = parser::parse_log_line(&l) {
-            entries.push(entry);
-        }
-    }
+    let git_mmap = unsafe { Mmap::map(&git_file)? };
+
+    let entries = Mutex::new(Vec::new());
+
+    let parse_and_collect = |mmap: &Mmap| {
+        mmap.par_split(|&b| b == b'\n').for_each(|line_bytes| {
+            if line_bytes.is_empty() {
+                return;
+            }
+            if let Ok(line_str) = std::str::from_utf8(line_bytes)
+                && let Some(entry) = parser::parse_log_line(line_str)
+            {
+                let mut guard = entries.lock().unwrap();
+                guard.push(entry);
+            }
+        });
+    };
+
+    parse_and_collect(&sys_mmap);
+    parse_and_collect(&git_mmap);
+
+    let mut entries = entries.into_inner().unwrap();
 
     ui::print_forensics_progress(entries.len(), window_minutes);
 
