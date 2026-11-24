@@ -2,16 +2,12 @@
 
 **logpulse** is an ultra-fast CLI utility for analyzing and filtering log files, written in **Rust**. The project is built with a strong focus on maximum performance and efficient system resource utilization using memory-mapped files (`memmap2`).
 
----
-
 ## What Has Been Implemented
 
 1. **High-Speed File Reading (`memmap2`):** Instead of traditional byte-by-byte or buffered I/O, files are mapped directly into the OS virtual memory space, enabling blazing-fast processing of large log files.
 2. **Ergonomic CLI (`clap`):** Declarative command-line argument parsing supporting both short and long flags, along with auto-generated help menus.
 3. **Zero-Allocation Pattern Filtering:** Searches for specified text patterns directly across byte slices (`&[u8]`) without allocating new strings on the heap for every line.
 4. **Code Quality Assurance (`Clippy`):** Fully verified with Rust's built-in linter to ensure idiomatic code and prevent common pitfalls.
-
----
 
 ## Dependencies (`Cargo.toml`)
 
@@ -24,8 +20,6 @@ rayon = "1.8"
 memmap2 = "0.9"
 chrono = "0.4"
 ```
-
----
 
 ## How to Run
 
@@ -71,8 +65,6 @@ chrono = "0.4"
     ./target/release/logpulse --sys-file inputs/example_syslog.log --filter ERROR
     ./target/release/logpulse --sys-file inputs/example_syslog.log --git-file inputs/example_git_commit.log --window-minutes 15
     ```
-
----
 
 ## Code Formatting
 
