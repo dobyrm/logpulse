@@ -1,5 +1,5 @@
-use crate::models::{LogEntry, LogLevel};
 use crate::forensics::IncidentReport;
+use crate::models::{LogEntry, LogLevel};
 
 pub fn format_log_entry(entry: &LogEntry) -> String {
     match entry {
@@ -18,8 +18,16 @@ pub fn format_log_entry(entry: &LogEntry) -> String {
             )
         }
         LogEntry::Git(git) => {
-            let short_hash = if git.hash.len() > 7 { &git.hash[..7] } else { &git.hash };
-            let short_parent = if git.parent_hash.len() > 7 { &git.parent_hash[..7] } else { &git.parent_hash };
+            let short_hash = if git.hash.len() > 7 {
+                &git.hash[..7]
+            } else {
+                &git.hash
+            };
+            let short_parent = if git.parent_hash.len() > 7 {
+                &git.parent_hash[..7]
+            } else {
+                &git.parent_hash
+            };
 
             format!(
                 "[{}] \x1b[1;35m[GIT]\x1b[0m {} <- {} | {} <{}> | {}",

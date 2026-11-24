@@ -10,11 +10,15 @@ use memmap2::Mmap;
 use rayon::prelude::*;
 use std::fs::File;
 use std::io::{self, Write};
-use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Mutex;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 #[derive(Parser, Debug)]
-#[command(name = "logpulse", version = "0.1.0", about = "High-performance CLI log analyzer")]
+#[command(
+    name = "logpulse",
+    version = "0.1.0",
+    about = "High-performance CLI log analyzer"
+)]
 struct Args {
     #[arg(long)]
     sys_file: String,
@@ -50,13 +54,15 @@ fn main() -> io::Result<()> {
     let matched_lines = AtomicUsize::new(0);
     let stdout = Mutex::new(io::stdout());
 
-    let since_time = args.since.as_deref().and_then(|s| {
-        NaiveDateTime::parse_from_str(s, "%Y-%m-%d %H:%M:%S").ok()
-    });
+    let since_time = args
+        .since
+        .as_deref()
+        .and_then(|s| NaiveDateTime::parse_from_str(s, "%Y-%m-%d %H:%M:%S").ok());
 
-    let until_time = args.until.as_deref().and_then(|s| {
-        NaiveDateTime::parse_from_str(s, "%Y-%m-%d %H:%M:%S").ok()
-    });
+    let until_time = args
+        .until
+        .as_deref()
+        .and_then(|s| NaiveDateTime::parse_from_str(s, "%Y-%m-%d %H:%M:%S").ok());
 
     mmap.par_split(|&b| b == b'\n').for_each(|line_bytes| {
         if line_bytes.is_empty() {

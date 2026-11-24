@@ -1,6 +1,8 @@
 pub fn matches_filter(line_bytes: &[u8], filter_bytes: Option<&[u8]>) -> bool {
     match filter_bytes {
-        Some(pattern) => line_bytes.windows(pattern.len()).any(|window| window == pattern),
+        Some(pattern) => line_bytes
+            .windows(pattern.len())
+            .any(|window| window == pattern),
         None => true,
     }
 }

@@ -74,7 +74,21 @@ chrono = "0.4"
 
 ---
 
-## Static Code Analysis (Linter)
+## Code Formatting
+
+To automatically format the codebase according to the official Rust style guidelines, run **rustfmt**:
+
+```bash
+cargo fmt
+```
+
+To check if the code is properly formatted without making any changes (useful for CI/CD pipelines):
+
+```bash
+cargo fmt --check
+```
+
+## Static Code Analysis 
 
 To check the codebase for idiomatic Rust patterns, performance improvements, and potential bugs, run **Clippy**:
 
@@ -82,7 +96,7 @@ To check the codebase for idiomatic Rust patterns, performance improvements, and
 cargo clippy
 ```
 
-### Running Tests
+## Tests
 
 Execute the unit test suite:
 

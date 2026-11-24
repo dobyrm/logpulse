@@ -26,27 +26,28 @@ fn parse_standard_syslog(line: &str) -> Option<SystemLog> {
     let timestamp_part = &line[0..15];
     let current_year = chrono::Utc::now().year();
     let full_ts_str = format!("{} {}", current_year, timestamp_part);
-    
+
     let timestamp = NaiveDateTime::parse_from_str(&full_ts_str, "%Y %b %e %H:%M:%S").ok()?;
 
     let rest = line[15..].trim_start();
-    
+
     let host_end = rest.find(' ')?;
     let host = rest[0..host_end].to_string();
 
     let service_msg = rest[host_end + 1..].trim_start();
-    
+
     let msg_parts: Vec<&str> = service_msg.splitn(2, ": ").collect();
     let service = msg_parts.first().unwrap_or(&"unknown").to_string();
     let message = msg_parts.get(1).unwrap_or(&"").to_string();
 
-    let level = if message.contains("ERROR") || message.contains("FATAL") || message.contains("deadlock") {
-        LogLevel::Error
-    } else if message.contains("WARN") || message.contains("Failed") {
-        LogLevel::Warn
-    } else {
-        LogLevel::Info
-    };
+    let level =
+        if message.contains("ERROR") || message.contains("FATAL") || message.contains("deadlock") {
+            LogLevel::Error
+        } else if message.contains("WARN") || message.contains("Failed") {
+            LogLevel::Warn
+        } else {
+            LogLevel::Info
+        };
 
     Some(SystemLog {
         timestamp,
@@ -66,7 +67,7 @@ fn parse_git_commit(line: &str) -> Option<GitCommit> {
     let hash = parts[0].to_string();
     let parent_hash = parts[1].to_string();
     let author = parts[2].to_string();
-    
+
     let email_raw = parts[3];
     if !email_raw.starts_with('<') || !email_raw.ends_with('>') {
         return None;
@@ -116,7 +117,8 @@ mod tests {
     #[test]
     fn test_parse_valid_git_head() {
         let _raw = "ef3d401522c4cb57764bec3285b09ae539706124 aeb9f08767e3750ef6c634f93ca208ac91418382 clever_fox <fox@forest.org> 1794578047 +0200\tcommit: feat(parser): add time-based filtering";
-        let raw_test = "ef3d4015 522c4cb5 clever_fox <fox@forest.org> 1794578047 +0200\tcommit: test";
+        let raw_test =
+            "ef3d4015 522c4cb5 clever_fox <fox@forest.org> 1794578047 +0200\tcommit: test";
         let entry = parse_log_line(raw_test).expect("Should parse git head log");
 
         if let LogEntry::Git(git) = entry {
